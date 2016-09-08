@@ -9,20 +9,25 @@ Created on 2016年9月7日
 
 import re
 import urllib.request
+import chardet
+import hashlib
 
-# from _io import open
  
-def getHtml(url, deformat):
+def getHtml(url):
     page = urllib.request.urlopen(url)
-    return page.read().decode(deformat)
+    body = page.read()
+    encodings = chardet.detect(body)['encoding'];
+    print(encodings)
+    return body.decode(encodings)
  
-def getImg(html, pythonreg):
+def getImg(html, pythonreg, filepath):
     reg = pythonreg
     imgre = re.compile(reg)
     imglist = re.findall(imgre, html)
     x = 0
     for imgurl in imglist:
-        urllib.request.urlretrieve(imgurl, '%s.jpg' % x) 
+        filename = hashlib.sha224(str(imgurl).encode('utf-8')).hexdigest()
+        urllib.request.urlretrieve(imgurl, filepath + filename + '%s.jpg' % x) 
         x += 1
     return imglist
 pythonurl = input('input you want Data capture url:')
@@ -30,15 +35,13 @@ print('your input url is :', pythonurl)
 if pythonurl == '' :
     print('over...')
     quit()
-decodetype = input('input Encoding format(gbk,utf-8...,default utf-8):')
-if decodetype == '' :
-    decodetype = 'utf-8'
-print('your input Encoding format is :', decodetype)
+
 pythonreg = input('input you reg for img(default r\'src="(.+?\.jpg)"\'):')
 if pythonreg == '' :
     pythonreg = r'src="(.+?\.jpg)"'
-
-html = getHtml(pythonurl, decodetype)
-print(getImg(html, pythonreg))
+filepath = input('input you want save path:')
+html = getHtml(pythonurl)
+print(html)
+print(getImg(html, pythonreg, filepath))
 print('end...')
 
