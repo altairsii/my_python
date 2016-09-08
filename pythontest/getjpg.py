@@ -9,15 +9,15 @@ Created on 2016年9月7日
 
 import re
 import urllib.request
+
 # from _io import open
  
-def getHtml(url):
+def getHtml(url, deformat):
     page = urllib.request.urlopen(url)
-    html = page.read().decode('gbk')
-    return html
+    return page.read().decode(deformat)
  
-def getImg(html):
-    reg = r'src="(.+?\.jpg)"'
+def getImg(html, pythonreg):
+    reg = pythonreg
     imgre = re.compile(reg)
     imglist = re.findall(imgre, html)
     x = 0
@@ -25,9 +25,20 @@ def getImg(html):
         urllib.request.urlretrieve(imgurl, '%s.jpg' % x) 
         x += 1
     return imglist
+pythonurl = input('input you want Data capture url:')
+print('your input url is :', pythonurl)
+if pythonurl == '' :
+    print('over...')
+    quit()
+decodetype = input('input Encoding format(gbk,utf-8...,default utf-8):')
+if decodetype == '' :
+    decodetype = 'utf-8'
+print('your input Encoding format is :', decodetype)
+pythonreg = input('input you reg for img(default r\'src="(.+?\.jpg)"\'):')
+if pythonreg == '' :
+    pythonreg = r'src="(.+?\.jpg)"'
 
- 
-html = getHtml("http://www.3lian.com/gif/2015/04-06/79269.html")
-print(getImg(html))
-
+html = getHtml(pythonurl, decodetype)
+print(getImg(html, pythonreg))
+print('end...')
 
