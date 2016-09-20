@@ -2,3 +2,9 @@ python -m pip install SomePackage  windows下pip安装第三方包
 
 
 sudo apt-get install python3-pip
+
+sudo add-apt-repository ppa:mystic-mirage/pycharm
+sudo apt-get update
+sudo apt-get install pycharm
+sudo apt-get install pycharm-community
+sudo apt-get remove pycharm pycharm-community
