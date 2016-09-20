@@ -1,1 +1,4 @@
 python -m pip install SomePackage  windows下pip安装第三方包
+
+
+sudo apt-get install python3-pip
